@@ -1,51 +1,54 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import editButton from "../../public/edit-3.svg";
-import deleteButton from "../../public/delete.svg";
-import { Link } from "react-router-dom";
+import axios from "axios"; // Import Axios for making HTTP requests
+import { useEffect, useState } from "react"; // Import React hooks
+import editButton from "../../public/edit-3.svg"; // Import SVG icon for edit button
+import deleteButton from "../../public/delete.svg"; // Import SVG icon for delete button
+import { Link } from "react-router-dom"; // Import Link component for navigation
 
 const Home = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]); // State to hold fetched data
+  const [loading, setLoading] = useState(true); // State to manage loading state
 
   useEffect(() => {
+    // Effect hook to fetch data when component mounts
     const fetchData = async () => {
       try {
         const res = await axios.get(
           "https://jsonplaceholder.typicode.com/users"
         );
-        setData(res.data);
-        setLoading(false);
+        setData(res.data); // Set fetched data to state
+        setLoading(false); // Update loading state once data is fetched
       } catch (err) {
         console.log(err);
-        setLoading(false);
-        alert("Failed to fetch data");
+        setLoading(false); // Update loading state in case of error
+        alert("Failed to fetch data"); // Notify user if fetching data fails
       }
     };
 
-    fetchData();
+    fetchData(); // Call fetchData function
   }, []);
 
   const handleDelete = (id) => {
+    // Function to handle delete operation
     axios
       .delete(`https://jsonplaceholder.typicode.com/users/${id}`)
       .then((res) => {
-        // Handle success
-        console.log(res);
+        // If delete request is successful
+        console.log(res); // Log response data
 
         // Update UI by removing the deleted user from data state
         setData((prevData) => prevData.filter((user) => user.id !== id));
-        alert("User was deleted successfully");
+        alert("User was deleted successfully"); // Notify user about successful deletion
       })
       .catch((error) => {
-        // Handle error
+        // If delete request fails
         console.log(error);
-        alert("Failed to delete user");
+        alert("Failed to delete user"); // Notify user about deletion failure
       });
   };
+
   return (
     <div>
-      {loading ? (
+      {loading ? ( // Render loading spinner if data is being fetched
         <svg
           className='animate-spin h-16 w-16'
           xmlns='http://www.w3.org/2000/svg'
@@ -72,7 +75,7 @@ const Home = () => {
           <div className='flex justify-start items-center my-3'>
             <Link to='/register' className='text-white'>
               <button className='bg-green-600 align content-start'>
-                Create +
+                Create + {/* Button to navigate to registration form */}
               </button>
             </Link>
           </div>
@@ -88,20 +91,22 @@ const Home = () => {
             <tbody>
               {data.map((d, i) => (
                 <tr key={i} className='border'>
-                  <td>{d.username}</td>
-                  <td>{d.email}</td>
-                  <td>{d.phone}</td>
+                  <td>{d.username}</td> {/* Display username */}
+                  <td>{d.email}</td> {/* Display email */}
+                  <td>{d.phone}</td> {/* Display phone number */}
                   <td className='flex gap-1 px-2'>
                     <Link to={`$/update/${d.id}`}>
                       <button className='bg-green-700 '>
-                        <img src={editButton} alt='' width={15} />
+                        <img src={editButton} alt='' width={15} />{" "}
+                        {/* Edit button */}
                       </button>
                     </Link>
                     <button
                       className='bg-red-700 '
                       onClick={() => handleDelete(d.id)}
                     >
-                      <img src={deleteButton} alt='' width={15} />
+                      <img src={deleteButton} alt='' width={15} />{" "}
+                      {/* Delete button */}
                     </button>
                   </td>
                 </tr>
