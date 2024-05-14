@@ -1,13 +1,15 @@
-import axios from "axios";
-import { useState } from "react";
+import axios from "axios"; // Import Axios for making HTTP requests
+import { useState } from "react"; // Import useState hook from React
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(""); // State for username input
+  const [email, setEmail] = useState(""); // State for email input
+  const [password, setPassword] = useState(""); // State for password input
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
+
+    // Send POST request to create a new user
     await axios
       .post("https://jsonplaceholder.typicode.com/posts", {
         username,
@@ -15,17 +17,21 @@ const Register = () => {
         password,
       })
       .then((response) => {
+        // Handle successful response from API
         if (username === "" || email === "") {
+          // If username or email is empty, display alert to fill all details
           alert("Please fill all the details");
         } else {
+          // Display success alert with username
           alert(`Data for ${username} was created.`);
-          console.log(response.data);
-          setUsername(""); // Reset username state
-          setEmail(""); // Reset email state
-          setPassword(""); // Reset password state
+          console.log(response.data); // Log response data to console
+          setUsername(""); // Reset username state after form submission
+          setEmail(""); // Reset email state after form submission
+          setPassword(""); // Reset password state after form submission
         }
       })
       .catch((error) => {
+        // Handle errors if POST request fails
         console.error("Error:", error);
       });
   };
@@ -49,13 +55,13 @@ const Register = () => {
                 type='text'
                 className='bg-indigo-50 px-4 py-2 outline-none rounded-md w-full'
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)} // Update username state on input change
               />
             </div>
             <div>
               <label
                 htmlFor='email'
-                className=' block mb-1 text-gray-600 font-semibold text-left'
+                className='block mb-1 text-gray-600 font-semibold text-left'
               >
                 Email
               </label>
@@ -63,7 +69,7 @@ const Register = () => {
                 type='text'
                 className='bg-indigo-50 px-4 py-2 outline-none rounded-md w-full'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)} // Update email state on input change
               />
             </div>
           </div>

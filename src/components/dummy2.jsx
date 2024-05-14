@@ -1,47 +1,49 @@
-import axios from "axios"; // Import Axios for making HTTP requests
-import { useEffect, useState } from "react"; // Import React hooks for managing state and side effects
-import { Link, useParams } from "react-router-dom"; // Import Link and useParams for routing
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 /**
- * Update component fetches user data based on ID from an API,
- * allows the user to update their details, and submits changes to the API.
+ * Fetches user data from an API based on the provided ID and updates the user state.
+ * Handles changes to the user data based on the input event.
+ * Submits updated user data to the API for persistence.
+ *
+ * @param {void}
+ * @return {void}
  */
 const Update = () => {
-  const { id } = useParams(); // Get the ID parameter from the URL
+  const { id } = useParams();
 
-  const [user, setUser] = useState({}); // State to hold user data
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    // Fetch user data when component mounts or when ID changes
     const fetchUserData = async () => {
       try {
         const res = await axios.get(
           `https://jsonplaceholder.typicode.com/users/${id}`
         );
-        setUser(res.data); // Set user data in state upon successful fetch
+        setUser(res.data);
       } catch (err) {
-        console.log(err); // Log error if fetching data fails
-        alert("Failed to fetch user data"); // Alert user about fetch failure
+        console.log(err);
+        alert("Failed to fetch user data");
       }
     };
 
-    fetchUserData(); // Call fetchUserData function
-  }, [id]); // Dependency array ensures effect runs when ID changes
+    fetchUserData();
+  }, [id]);
 
   const handleChange = (e) => {
-    // Update user state based on input changes
     const { name, value } = e.target;
     // Split the name into parts to handle nested properties
     const nameParts = name.split(".");
 
     if (nameParts.length === 1) {
-      // If it's a top-level property update
+      // If it's a top-level property
       setUser((prevUser) => ({
         ...prevUser,
         [name]: value,
       }));
     } else if (nameParts.length === 2) {
-      // If it's a nested property update
+      // If it's a nested property
       const [parent, child] = nameParts;
       setUser((prevUser) => ({
         ...prevUser,
@@ -54,19 +56,17 @@ const Update = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-
+    e.preventDefault();
     try {
-      // Send PUT request to update user data
       const res = await axios.put(
         `https://jsonplaceholder.typicode.com/users/${id}`,
         user
       );
-      alert("User updated successfully"); // Alert user about successful update
-      console.log(res); // Log response data to console
+      alert("User updated successfully");
+      console.log(res);
     } catch (err) {
-      console.log(err); // Log error if update fails
-      alert("Failed to update user"); // Alert user about update failure
+      console.log(err);
+      alert("Failed to update user");
     }
   };
 
@@ -75,19 +75,17 @@ const Update = () => {
       <div className='container max-w-screen-lg mx-auto'>
         <h2 className='font-semibold text-xl text-gray-600'>User Details</h2>
         <p className='text-gray-500 mb-6'>
-          Change the details you want to update
+          Change the details, you want to update
         </p>
         <form onSubmit={handleSubmit}>
           <div className='bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6'>
             <div className='grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3'>
               <div className='text-gray-600'>
-                {/* Placeholder for section details */}
                 <p className='font-medium text-lg'></p>
                 <p></p>
               </div>
               <div className='lg:col-span-2'>
                 <div className='grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5'>
-                  {/* Input fields for updating user details */}
                   <div className='md:col-span-5 text-left'>
                     <label htmlFor='name'>Full Name</label>
                     <input
@@ -151,7 +149,6 @@ const Update = () => {
                 </div>
               </div>
             </div>
-            {/* Submit button to update user details */}
             <div className='flex items-center justify-center sm:mt-5 sm:gap-5'>
               <button
                 type='submit'
@@ -160,7 +157,6 @@ const Update = () => {
               >
                 Update
               </button>
-              {/* Link to navigate back to home page */}
               <Link to='/'>
                 <button
                   type='submit'
