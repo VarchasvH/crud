@@ -1,13 +1,18 @@
+// dependencies
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// ? Css imports
 import "./App.css";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Users from "./components/Users.jsx";
+
+// ? Component imports
 import Register from "./components/Register.jsx";
-
 import Home from "./components/Home.jsx";
+import Update from "./components/Update.jsx";
 
+// ? Routes
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,9 +23,10 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+
   {
-    path: "/users",
-    element: <Users />,
+    path: "$/update/:id",
+    element: <Update />,
   },
 ]);
 

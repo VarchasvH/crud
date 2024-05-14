@@ -9,7 +9,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
         const res = await axios.get(
           "https://jsonplaceholder.typicode.com/users"
@@ -19,9 +19,30 @@ const Home = () => {
       } catch (err) {
         console.log(err);
         setLoading(false);
+        alert("Failed to fetch data");
       }
-    })();
-  });
+    };
+
+    fetchData();
+  }, []);
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then((res) => {
+        // Handle success
+        console.log(res);
+
+        // Update UI by removing the deleted user from data state
+        setData((prevData) => prevData.filter((user) => user.id !== id));
+        alert("User was deleted successfully");
+      })
+      .catch((error) => {
+        // Handle error
+        console.log(error);
+        alert("Failed to delete user");
+      });
+  };
   return (
     <div>
       {loading ? (
@@ -76,7 +97,10 @@ const Home = () => {
                         <img src={editButton} alt='' width={15} />
                       </button>
                     </Link>
-                    <button className='bg-red-700 '>
+                    <button
+                      className='bg-red-700 '
+                      onClick={() => handleDelete(d.id)}
+                    >
                       <img src={deleteButton} alt='' width={15} />
                     </button>
                   </td>
