@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./App.css";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Users from "./components/Users.jsx";
 import Register from "./components/Register.jsx";
+
 import Home from "./components/Home.jsx";
 
 const router = createBrowserRouter([
